@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Momentum Intraday Trading Workshop</title>
+  <meta name="description" content="Understand the process behind a structured intraday trading strategy. Learn momentum stock selection, price action chart structure, step-by-step strategy setup, and risk-based position sizing." />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans (Identical to reference website) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          },
+          colors: {
+            trade: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22'
+            },
+            accent: {
+              50: '#fffbeb',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .hover-lift {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px -8px rgba(4, 120, 87, 0.15);
+    }
+    /* Smooth accordion arrow rotation */
+    details summary svg {
+      transition: transform 0.2s ease-in-out;
+    }
+    details[open] summary svg {
+      transform: rotate(180deg);
+    }
+    .study-img {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .study-img:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.15);
+    }
+      .bg-grid-wa {
+      background-size: 36px 36px;
+      background-image: 
+        linear-gradient(to right, rgba(18, 140, 126, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(18, 140, 126, 0.07) 1px, transparent 1px);
+    }
+    .bg-wa-radial-glow {
+      background: radial-gradient(circle at 50% 12%, rgba(37, 211, 102, 0.16) 0%, rgba(18, 140, 126, 0.08) 40%, rgba(255, 255, 255, 0) 75%);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-trade-500 selection:text-white pb-24 md:pb-12">
+
+  <!-- ========================================== -->
+  <!-- 1. TOP STICKY URGENCY BAR (WHATSAPP GREEN GRADIENT BANNER) -->
+  <!-- ========================================== -->
+  <div class="text-white text-xs sm:text-sm py-2 px-4 sticky top-0 z-50 shadow-lg border-b border-white/10" style="background: linear-gradient(90deg, #054740 0%, #075E54 20%, #128C7E 45%, #25D366 50%, #128C7E 55%, #075E54 80%, #054740 100%);">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 flex-wrap">
+      <div class="flex items-center gap-2.5 font-medium flex-wrap">
+        <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-black text-[11px] px-2.5 py-0.5 rounded-full shadow-sm uppercase tracking-wide">
+          ⚡ SPECIAL OFFER
+        </span>
+        <span class="font-bold tracking-wide text-xs sm:text-sm text-white">
+          The Momentum Intraday Trading Workshop at just <span class="line-through text-emerald-200">₹1,999</span> <strong class="text-white text-sm sm:text-base font-black">₹9 only</strong>
+        </span>
+        <span class="hidden sm:inline-block bg-white/20 text-white font-extrabold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider border border-white/30">
+          SAVE 99%
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 text-xs font-semibold text-emerald-100">
+          <span class="text-[11px] uppercase tracking-wider font-bold">ENDS IN</span>
+          <span class="font-mono font-black text-amber-300 bg-black/60 px-2.5 py-0.5 rounded-md border border-white/20 text-xs sm:text-sm tracking-wider shadow-inner" id="evergreen-timer">
+            15:00
+          </span>
+        </div>
+        <a href="#pricing" class="inline-flex items-center gap-1.5 bg-white hover:bg-emerald-50 text-[#075E54] font-black px-4 py-1.5 rounded-full text-xs sm:text-sm shadow-md transition transform hover:scale-105">
+          <span>Reserve Seat →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. HERO SECTION (LIGHT BACKGROUND & CENTER ALIGNED) -->
+  <!-- ========================================== -->
+  <header class="relative overflow-hidden bg-white bg-grid-wa text-slate-900 pt-12 pb-20 border-b border-trade-200">
+    <!-- Ambient WhatsApp Green Radiant Glow Overlay -->
+    <div class="absolute inset-0 bg-wa-radial-glow pointer-events-none"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[450px] bg-gradient-to-b from-[#25D366]/20 via-[#128C7E]/15 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 relative z-10 text-center">
+
+      <!-- Top Pill -->
+      <div class="inline-flex items-center gap-2 bg-white border border-trade-200 text-trade-800 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-6 shadow-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-trade-500 animate-ping"></span>
+        <span>5,000+ people attended online.</span>
+      </div>
+
+      <!-- Main Headline (Center Aligned Format) -->
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-black text-slate-950 tracking-tight leading-[1.15] max-w-5xl mx-auto text-center">
+        The Momentum Intraday<br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#075E54] via-[#128C7E] to-[#25D366]">
+          Trading Workshop
+        </span>
+      </h1>
+      
+      <!-- Headline Subtext -->
+      <p class="text-lg sm:text-2xl font-display font-bold text-trade-900 mt-4 max-w-3xl mx-auto leading-snug">
+        Understand the process behind a structured trading strategy.
+      </p>
+
+      <!-- Capsule Metadata Section (No generic emojis - Specific Brand Icons) -->
+      <div class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 max-w-4xl mx-auto mt-7">
+        <!-- Date Capsule -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-trade-200 bg-white/95 text-slate-800 text-xs sm:text-sm font-semibold shadow-sm hover:border-trade-400 hover:shadow-md transition">
+          <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </span>
+          <span>Date: <strong class="text-trade-950 font-bold">25 November</strong></span>
+        </div>
+
+        <!-- Time Capsule -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-trade-200 bg-white/95 text-slate-800 text-xs sm:text-sm font-semibold shadow-sm hover:border-trade-400 hover:shadow-md transition">
+          <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </span>
+          <span>Time: <strong class="text-trade-950 font-bold">8:00 PM – 10:00 PM</strong></span>
+        </div>
+
+        <!-- Mode Capsule -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-trade-200 bg-white/95 text-slate-800 text-xs sm:text-sm font-semibold shadow-sm hover:border-trade-400 hover:shadow-md transition">
+          <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          </span>
+          <span>Mode: <strong class="text-trade-950 font-bold">Live on Zoom</strong></span>
+        </div>
+
+        <!-- Coach Capsule -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-trade-200 bg-white/95 text-slate-800 text-xs sm:text-sm font-semibold shadow-sm hover:border-trade-400 hover:shadow-md transition">
+          <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          </span>
+          <span>Coach: <strong class="text-trade-950 font-bold">Nikhil</strong></span>
+        </div>
+      </div>
+
+      <!-- Masterclass Hero Banner Image / Preview Visual (WhatsApp Green Gradient Frame) -->
+      <div class="mt-8 max-w-5xl mx-auto px-2">
+        <div class="relative rounded-3xl overflow-hidden p-1.5 bg-gradient-to-r from-[#075E54] via-[#25D366] to-[#128C7E] shadow-2xl shadow-[#25D366]/25 group cursor-pointer hover:shadow-[#25D366]/40 transition-all duration-300" onclick="openImageModal('images/hero-banner.svg')">
+          <div class="rounded-[22px] overflow-hidden bg-[#054740]">
+            <img
+              src="images/hero-banner.svg"
+              alt="The Momentum Intraday Trading Workshop Strategy Preview"
+              class="w-full h-auto object-cover rounded-[22px] block group-hover:scale-[1.015] transition-transform duration-300"
+            />
+          </div>
+          <div class="absolute bottom-5 right-5 bg-[#054740]/90 text-[#dcf8c6] text-xs px-3.5 py-1.5 rounded-xl border border-[#25D366]/50 flex items-center gap-2 shadow-xl backdrop-blur-md">
+            <svg class="w-3.5 h-3.5 text-[#25D366]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+            <span class="font-bold tracking-wide">Click to expand graphic</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subheading (Below Banner) -->
+      <div class="max-w-4xl mx-auto mt-8">
+        <div class="inline-block bg-gradient-to-r from-trade-100/90 via-emerald-50 to-trade-100/90 border-2 border-trade-300 rounded-2xl py-3.5 px-6 sm:px-8 shadow-sm">
+          <p class="text-base sm:text-xl md:text-2xl font-display font-bold text-trade-950 leading-snug">
+            Understand the process behind momentum-based intraday trading.
+          </p>
+        </div>
+      </div>
+
+      <!-- Price Showcase & Registration CTA Button -->
+      <div class="mt-8 text-center">
+        <!-- Price Off Showcase -->
+        <div class="inline-flex items-center justify-center gap-2.5 bg-emerald-50 border border-emerald-200 px-5 py-2 rounded-full shadow-sm mb-4">
+          <span class="text-xs text-slate-500 font-medium uppercase tracking-wide">Regular Fee:</span>
+          <span class="line-through text-slate-400 font-bold text-sm">₹1,999</span>
+          <span class="text-emerald-800 font-black text-base sm:text-lg bg-emerald-200/70 px-2.5 py-0.5 rounded-full">
+            Special Fee: ₹9
+          </span>
+        </div>
+
+        <div>
+          <a href="#pricing" class="inline-flex items-center justify-center gap-3 px-10 sm:px-16 py-4 sm:py-5 bg-gradient-to-r from-[#075E54] via-[#128C7E] to-[#25D366] hover:from-[#054740] hover:to-[#1ebe5d] text-white shadow-xl shadow-[#25D366]/25 text-white font-extrabold text-xl sm:text-2xl rounded-2xl shadow-2xl hover:shadow-emerald-500/30 transition-all duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-95">
+            <span>RESERVE YOUR SEAT</span>
+            <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+        <p class="text-xs text-slate-500 mt-3 font-medium">
+          ⚡ Instant Workshop Access Details &amp; Resource Kit after confirmation | Strictly Limited Batch For Dedicated Interaction
+        </p>
+      </div>
+
+      <!-- Achievement & Trust Badges Bar (Specific Branding Icons) -->
+      <div class="mt-12 pt-8 border-t border-trade-200/80 max-w-5xl mx-auto">
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-slate-800">
+          <div class="flex items-center gap-2.5 bg-white/95 px-4 py-2.5 rounded-xl border border-trade-200 shadow-sm hover:border-trade-400 transition">
+            <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </span>
+            <span>1 Complete Intraday Strategy</span>
+          </div>
+          <div class="flex items-center gap-2.5 bg-white/95 px-4 py-2.5 rounded-xl border border-trade-200 shadow-sm hover:border-trade-400 transition">
+            <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </span>
+            <span>Momentum Stock Screening</span>
+          </div>
+          <div class="flex items-center gap-2.5 bg-white/95 px-4 py-2.5 rounded-xl border border-trade-200 shadow-sm hover:border-trade-400 transition">
+            <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+            </span>
+            <span>Risk-Based Position Sizing</span>
+          </div>
+          <div class="flex items-center gap-2.5 bg-white/95 px-4 py-2.5 rounded-xl border border-trade-200 shadow-sm hover:border-trade-400 transition">
+            <span class="w-6 h-6 rounded-lg bg-trade-100 text-trade-700 flex items-center justify-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </span>
+            <span>100% Educational • Zero Tips</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- 3. REAL CHART STUDIES & EDUCATIONAL CASE EXAMPLES -->
+  <!-- (Matching the 6-Card Proof Showcase of Reference Site) -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-gradient-to-b from-white via-trade-50/40 to-emerald-50/30 border-b border-trade-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3.5 py-1 rounded-full">
+          Historical Case Studies &amp; Chart Analysis
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 mt-3">
+          Real Market Structure, Real Execution Logic.
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
+          See the educational setup breakdowns and how rule-based price action filters eliminate guessing in fast intraday markets.
+        </p>
+      </div>
+
+      <!-- 6-Card Grid: 5 Case Studies + 1 CTA Card (Exact structure of reference) -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Case 1 -->
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-trade-400 transition-all duration-300 cursor-pointer group" onclick="openImageModal('images/case-study-1.svg')">
+          <img src="images/case-study-1.svg" alt="Case Study 1" class="w-full h-auto block group-hover:scale-[1.01] transition-transform duration-200">
+        </div>
+
+        <!-- Case 2 -->
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-trade-400 transition-all duration-300 cursor-pointer group" onclick="openImageModal('images/case-study-2.svg')">
+          <img src="images/case-study-2.svg" alt="Case Study 2" class="w-full h-auto block group-hover:scale-[1.01] transition-transform duration-200">
+        </div>
+
+        <!-- Case 3 -->
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-trade-400 transition-all duration-300 cursor-pointer group" onclick="openImageModal('images/case-study-3.svg')">
+          <img src="images/case-study-3.svg" alt="Case Study 3" class="w-full h-auto block group-hover:scale-[1.01] transition-transform duration-200">
+        </div>
+
+        <!-- Case 4 -->
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-trade-400 transition-all duration-300 cursor-pointer group" onclick="openImageModal('images/case-study-4.svg')">
+          <img src="images/case-study-4.svg" alt="Case Study 4" class="w-full h-auto block group-hover:scale-[1.01] transition-transform duration-200">
+        </div>
+
+        <!-- Case 5 -->
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-trade-400 transition-all duration-300 cursor-pointer group" onclick="openImageModal('images/case-study-5.svg')">
+          <img src="images/case-study-5.svg" alt="Case Study 5" class="w-full h-auto block group-hover:scale-[1.01] transition-transform duration-200">
+        </div>
+
+        <!-- Card 6: Join Now CTA Card (Gradient Box) -->
+        <div class="bg-gradient-to-br from-trade-700 to-teal-900 rounded-2xl p-6 sm:p-8 text-white flex flex-col justify-between shadow-lg">
+          <div>
+            <span class="bg-white/20 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Step Into Structured Trading
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-display font-extrabold mt-4 leading-tight">
+              Ready to Stop Guessing and Start Planning?
+            </h3>
+            <p class="text-xs sm:text-sm text-trade-100 mt-3 leading-relaxed">
+              Experience the clarity of understanding setup logic, momentum stock screening, and risk-to-quantity calculation.
+            </p>
+          </div>
+
+          <div class="mt-8">
+            <a href="#pricing" class="w-full block text-center py-4 bg-white hover:bg-slate-100 text-slate-950 font-extrabold text-sm sm:text-base rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+              Reserve Your Seat Now →
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  
+  <!-- ========================================== -->
+  <!-- 4. REAL STUDENT VIDEO TESTIMONIAL -->
+  <!-- (Matching Authority & Video Showcase of Reference Site) -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-5xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3.5 py-1 rounded-full">
+          Real Student Feedback
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 mt-3">
+          Mentorship That Goes Beyond Technicals
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
+          Hear directly from learners who transformed their market discipline and trading psychology under Coach Nikhil's guidance.
+        </p>
+      </div>
+
+      <!-- Video Showcase Container -->
+      <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-trade-950 rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl">
+        <div class="grid md:grid-cols-12 gap-8 items-center">
+
+          <!-- Video Thumbnail Card / Player Trigger (Vertical / Reel format) -->
+          <div class="md:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-[270px] aspect-[9/16] rounded-2xl overflow-hidden border-2 border-trade-500/80 shadow-2xl group cursor-pointer bg-slate-900 hover-lift" onclick="openVideoModal('videos/workshop-video.mp4')">
+              <img src="images/video-frame-5s.jpg" alt="Student Video Review for Coach Nikhil" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              
+              <!-- Dark overlay with Play Button -->
+              <div class="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition flex items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-trade-600 text-white flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:bg-trade-500 transition-all duration-300 border-2 border-white/60">
+                  <svg class="w-7 h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+
+              <!-- Top & Bottom Badges -->
+              <span class="absolute top-3 left-3 bg-slate-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-700">
+                ▶ 0:38 Video
+              </span>
+              <span class="absolute bottom-3 left-3 right-3 bg-slate-900/90 text-trade-300 text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-slate-700 text-center backdrop-blur-sm">
+                Click to Watch Student Review
+              </span>
+            </div>
+          </div>
+
+          <!-- Testimonial Quote & Context -->
+          <div class="md:col-span-7 text-white space-y-4">
+            <div class="inline-flex items-center gap-2 bg-trade-500/20 border border-trade-500/40 text-trade-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+              <span>★ ★ ★ ★ ★</span>
+              <span>Verified Learner Review</span>
+            </div>
+
+            <blockquote class="text-lg sm:text-xl font-display font-medium text-slate-100 leading-relaxed italic">
+              "I want to thank Nikhil from the very bottom of my heart. He has helped me a lot, especially on the psyche level. His mentorship has been fabulous for me... thank you for helping me on the mindset level."
+            </blockquote>
+
+            <div class="pt-2">
+              <p class="font-bold text-base text-white">Falcon 9 Community Member</p>
+              <p class="text-xs text-trade-300">Stock Market Mentorship Program Participant</p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 grid grid-cols-2 gap-3 text-xs text-slate-300">
+              <div class="flex items-center gap-2">
+                <span class="text-trade-400 font-bold">✔</span> Trading Psychology Support
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-trade-400 font-bold">✔</span> Objective Risk Management
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-trade-400 font-bold">✔</span> Direct Mentor Access
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-trade-400 font-bold">✔</span> Structured Strategy Framework
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <a href="#pricing" class="inline-flex items-center gap-2 bg-trade-600 hover:bg-trade-500 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                <span>Join Coach Nikhil's Workshop For Just ₹9</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 4. INSIDE THE CLASSROOM & LABS (3-PHOTO GALLERY) -->
+  <!-- (Matching 'In the Classroom & Clinic' from Reference) -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-50 border border-trade-200 px-3.5 py-1 rounded-full">
+          Live Interactive Delivery
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-bold text-slate-950 mt-3">
+          Inside The Workshop Experience
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Experience practical, screen-shared demonstrations of stock screening, price action reading, and live mathematical sizing calculations.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm group hover-lift">
+          <div class="aspect-[4/3] overflow-hidden bg-slate-900 cursor-pointer" onclick="openImageModal('images/gallery-1.svg')">
+            <img src="images/gallery-1.svg" alt="Live Screen-Share Strategy Breakdown" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-5">
+            <span class="text-[10px] font-bold text-trade-700 uppercase">Core Methodology</span>
+            <h3 class="font-bold text-slate-900 text-base mt-1">Live Screen-Share Strategy Breakdown</h3>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm group hover-lift">
+          <div class="aspect-[4/3] overflow-hidden bg-slate-900 cursor-pointer" onclick="openImageModal('images/gallery-2.svg')">
+            <img src="images/gallery-2.svg" alt="Momentum Screener Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-5">
+            <span class="text-[10px] font-bold text-trade-700 uppercase">Screening Lab</span>
+            <h3 class="font-bold text-slate-900 text-base mt-1">Momentum Watchlist Construction</h3>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm group hover-lift">
+          <div class="aspect-[4/3] overflow-hidden bg-slate-900 cursor-pointer" onclick="openImageModal('images/gallery-3.svg')">
+            <img src="images/gallery-3.svg" alt="Position Sizing Demonstration" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-5">
+            <span class="text-[10px] font-bold text-trade-700 uppercase">Risk Management</span>
+            <h3 class="font-bold text-slate-900 text-base mt-1">Mathematical Quantity Sizing</h3>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 5. FOUR IMPORTANT LEARNING AREAS (CURRICULUM) -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-gradient-to-b from-white via-trade-50/40 to-emerald-50/30 border-b border-trade-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3.5 py-1 rounded-full">
+          Here's What You Will Learn
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 mt-3">
+          ONE WORKSHOP. FOUR IMPORTANT LEARNING AREAS.
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
+          Master the foundational concepts required to navigate intraday setups with a disciplined, systematic mindset.
+        </p>
+      </div>
+
+      <!-- 4 Core Pillars Grid -->
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- Pillar 01 -->
+        <div class="bg-slate-50 rounded-3xl border border-slate-200 p-6 sm:p-8 hover-lift group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-12 h-12 rounded-2xl bg-trade-600 text-white font-display font-black text-lg flex items-center justify-center shadow-md">
+                01
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3 py-1 rounded-full">
+                Full Strategy Framework
+              </span>
+            </div>
+            
+            <h3 class="text-xl sm:text-2xl font-display font-bold text-slate-950">
+              Understand One Complete Intraday Trading Strategy
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 font-medium">
+              Explore one intraday trading strategy from beginning to end.
+            </p>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand the logic behind the strategy.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Learn how a trading setup is identified.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand the conditions required before considering a trade.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Study the step-by-step execution process through historical examples.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Thumbnail preview of diagram 1 -->
+          <div class="mt-6 pt-5 border-t border-slate-200/80 cursor-pointer" onclick="openImageModal('images/diagram-1.svg')">
+            <div class="relative rounded-xl overflow-hidden border border-slate-300 bg-slate-900 group-hover:border-trade-500 transition">
+              <img src="images/diagram-1.svg" alt="Strategy Execution Diagram" class="w-full h-auto object-cover block">
+              <span class="absolute top-2 right-2 bg-slate-950/80 text-trade-300 text-[10px] font-bold px-2 py-0.5 rounded">
+                Click to inspect
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 02 -->
+        <div class="bg-slate-50 rounded-3xl border border-slate-200 p-6 sm:p-8 hover-lift group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-12 h-12 rounded-2xl bg-trade-600 text-white font-display font-black text-lg flex items-center justify-center shadow-md">
+                02
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3 py-1 rounded-full">
+                Stock Screening Logic
+              </span>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-display font-bold text-slate-950">
+              Understand Momentum Stock Selection
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 font-medium">
+              Learn the concepts used to identify stocks showing momentum.
+            </p>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand what stock momentum means.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Learn the parameters used in momentum-based stock screening.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand how to create a structured stock-selection watchlist.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Explore historical examples for educational purposes.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Thumbnail preview of diagram 2 -->
+          <div class="mt-6 pt-5 border-t border-slate-200/80 cursor-pointer" onclick="openImageModal('images/diagram-2.svg')">
+            <div class="relative rounded-xl overflow-hidden border border-slate-300 bg-slate-900 group-hover:border-trade-500 transition">
+              <img src="images/diagram-2.svg" alt="Momentum Screener Diagram" class="w-full h-auto object-cover block">
+              <span class="absolute top-2 right-2 bg-slate-950/80 text-trade-300 text-[10px] font-bold px-2 py-0.5 rounded">
+                Click to inspect
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 03 -->
+        <div class="bg-slate-50 rounded-3xl border border-slate-200 p-6 sm:p-8 hover-lift group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-12 h-12 rounded-2xl bg-trade-600 text-white font-display font-black text-lg flex items-center justify-center shadow-md">
+                03
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3 py-1 rounded-full">
+                Chart Reading
+              </span>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-display font-bold text-slate-950">
+              Learn the Price Action Behind the Strategy
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 font-medium">
+              Understand the chart-reading concepts required to study the trading setup.
+            </p>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand candlestick behaviour.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Learn important price action concepts.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand chart structure.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Identify the conditions that form part of the strategy.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Thumbnail preview of diagram 3 -->
+          <div class="mt-6 pt-5 border-t border-slate-200/80 cursor-pointer" onclick="openImageModal('images/diagram-3.svg')">
+            <div class="relative rounded-xl overflow-hidden border border-slate-300 bg-slate-900 group-hover:border-trade-500 transition">
+              <img src="images/diagram-3.svg" alt="Price Action Structure Diagram" class="w-full h-auto object-cover block">
+              <span class="absolute top-2 right-2 bg-slate-950/80 text-trade-300 text-[10px] font-bold px-2 py-0.5 rounded">
+                Click to inspect
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 04 -->
+        <div class="bg-slate-50 rounded-3xl border border-slate-200 p-6 sm:p-8 hover-lift group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-12 h-12 rounded-2xl bg-trade-600 text-white font-display font-black text-lg flex items-center justify-center shadow-md">
+                04
+              </span>
+              <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3 py-1 rounded-full">
+                Capital Protection
+              </span>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-display font-bold text-slate-950">
+              Calculate Trading Quantity According to Risk
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 font-medium">
+              Learn why position sizing is an important part of trading preparation.
+            </p>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand predefined trading risk.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Learn how stop-loss distance affects position size.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Understand quantity calculation.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-trade-600 font-bold">✔</span>
+                <span>Explore practical educational examples of risk-based position sizing.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Thumbnail preview of diagram 4 -->
+          <div class="mt-6 pt-5 border-t border-slate-200/80 cursor-pointer" onclick="openImageModal('images/diagram-4.svg')">
+            <div class="relative rounded-xl overflow-hidden border border-slate-300 bg-slate-900 group-hover:border-trade-500 transition">
+              <img src="images/diagram-4.svg" alt="Risk Calculation Diagram" class="w-full h-auto object-cover block">
+              <span class="absolute top-2 right-2 bg-slate-950/80 text-trade-300 text-[10px] font-bold px-2 py-0.5 rounded">
+                Click to inspect
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="#pricing" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#075E54] via-[#128C7E] to-[#25D366] hover:from-[#054740] hover:to-[#1ebe5d] text-white shadow-xl shadow-[#25D366]/25 text-white font-bold text-base rounded-2xl shadow-lg transition transform hover:-translate-y-0.5">
+          <span>Explore The Blueprint Live — Reserve Your Seat</span>
+          <span>→</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 6. WHY LEARN A STRUCTURED APPROACH? (PROCESS FLOW) -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3.5 py-1 rounded-full">
+          The 5-Stage Intraday Blueprint Flow
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-bold text-slate-950 mt-3">
+          WHY LEARN A STRUCTURED APPROACH?
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-3 max-w-2xl mx-auto leading-relaxed">
+          Understanding a trading strategy involves more than knowing when to enter a trade. It requires understanding the complete process from end to end:
+        </p>
+      </div>
+
+      <!-- 5-Step Process Pipeline -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3.5 sm:gap-4 relative">
+
+        <!-- Step 1 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative hover:border-trade-400 transition">
+          <span class="text-[11px] font-extrabold text-trade-600 uppercase tracking-widest block mb-1">STAGE 01</span>
+          <h4 class="font-display font-extrabold text-slate-900 text-base mb-1.5">STOCK SELECTION</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Filter the market for liquid momentum candidates with elevated relative volume.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative hover:border-trade-400 transition">
+          <span class="text-[11px] font-extrabold text-trade-600 uppercase tracking-widest block mb-1">STAGE 02</span>
+          <h4 class="font-display font-extrabold text-slate-900 text-base mb-1.5">PRICE ACTION</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Study candlestick structure, support/resistance zones, and multi-timeframe trends.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative hover:border-trade-400 transition">
+          <span class="text-[11px] font-extrabold text-trade-600 uppercase tracking-widest block mb-1">STAGE 03</span>
+          <h4 class="font-display font-extrabold text-slate-900 text-base mb-1.5">STRATEGY SETUP</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Validate pre-trade criteria before considering an order. No confirmation, no trade.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative hover:border-trade-400 transition">
+          <span class="text-[11px] font-extrabold text-trade-600 uppercase tracking-widest block mb-1">STAGE 04</span>
+          <h4 class="font-display font-extrabold text-slate-900 text-base mb-1.5">TRADE PLANNING</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Determine entry trigger, exact invalidation level (stop loss), and profit targets.</p>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="bg-white rounded-2xl p-5 border-2 border-trade-500 bg-trade-50/50 shadow-md relative">
+          <span class="text-[11px] font-extrabold text-trade-700 uppercase tracking-widest block mb-1">STAGE 05</span>
+          <h4 class="font-display font-extrabold text-slate-900 text-base mb-1.5">POSITION SIZING</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">Calculate exact share quantity based on capital risk tolerance before pressing execute.</p>
+        </div>
+
+      </div>
+
+      <!-- Process Conclusion Callout -->
+      <div class="mt-8 bg-white border border-slate-200 rounded-2xl p-6 text-center max-w-3xl mx-auto shadow-sm">
+        <p class="text-slate-800 text-sm sm:text-base font-semibold leading-relaxed">
+          <span class="text-trade-700 font-extrabold">STOCK SELECTION → PRICE ACTION → STRATEGY SETUP → TRADE PLANNING → POSITION SIZING</span>
+        </p>
+        <p class="text-xs sm:text-sm text-slate-600 mt-2">
+          This workshop brings these concepts together in one structured educational experience so you never enter a trade without a predefined reason and plan.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 7. MARKET REALITY: WHY UNSTRUCTURED TRADING FAILS -->
+  <!-- (Dark Contrast Section identical to Reference) -->
+  <!-- ========================================== -->
+  <section class="py-14 bg-slate-950 text-white relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 relative z-10">
+
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-400 bg-trade-950 px-3 py-1 rounded-full border border-trade-800">
+          The Science &amp; Reality of Trading
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-display font-extrabold mt-3 text-white">
+          Why Random Entries &amp; Guesswork Fail in Intraday
+        </h2>
+        <p class="text-slate-400 text-xs sm:text-sm mt-1">
+          Trading is not about predicting the future — it is an exercise in probability, discipline, and mathematical risk management.
+        </p>
+      </div>
+
+      <!-- 3 Key Market Realities Grid -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+          <span class="text-2xl mb-2 block">⚖️</span>
+          <h4 class="font-bold text-white text-base">Predefined Math</h4>
+          <p class="text-xs text-slate-400 mt-1">
+            Even a 50% win-rate strategy generates positive expectancy if reward outweighs risk and losses are strictly capped.
+          </p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+          <span class="text-2xl mb-2 block">🧠</span>
+          <h4 class="font-bold text-emerald-400 text-base">Emotional Detachment</h4>
+          <p class="text-xs text-slate-400 mt-1">
+            When your trade setup has clear rules and your risk is predetermined in rupees, panic and anxiety disappear.
+          </p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+          <span class="text-2xl mb-2 block">📐</span>
+          <h4 class="font-bold text-white text-base">Dynamic Sizing</h4>
+          <p class="text-xs text-slate-400 mt-1">
+            Fixed share quantities cause catastrophic drawdowns on volatile stocks. Position sizing must adapt to the chart.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Comparison: Guesswork vs Structured Blueprint -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-red-950/30 border border-red-900/40 p-5 rounded-2xl">
+          <span class="text-[11px] font-bold uppercase text-red-400 tracking-wider">❌ Conventional Guesswork &amp; Tips</span>
+          <h5 class="text-sm font-bold text-white mt-1">Random Decisions</h5>
+          <p class="text-xs text-slate-400 mt-1">
+            Entering based on news headlines, chasing green candles, moving stop-losses further away, and hoping for reversals.
+          </p>
+        </div>
+        <div class="bg-trade-950/60 border border-trade-500/50 p-5 rounded-2xl">
+          <span class="text-[11px] font-bold uppercase text-trade-400 tracking-wider">✔ The Structured Blueprint Approach</span>
+          <h5 class="text-sm font-bold text-white mt-1">Rule-Based Execution</h5>
+          <p class="text-xs text-slate-300 mt-1">
+            Screening momentum stocks with documented parameters, confirming price action, and calculating exact position size before entering.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 8. WHO IS THIS WORKSHOP FOR? -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-gradient-to-b from-white via-trade-50/40 to-emerald-50/30 border-b border-trade-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3.5 py-1 rounded-full">
+          Who Is This Workshop For?
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 mt-3">
+          Designed For Serious, Disciplined Market Learners
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
+          This workshop is built for anyone who wants to replace randomness with a structured, step-by-step trading education.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover-lift">
+          <div class="w-10 h-10 rounded-xl bg-trade-100 text-trade-700 font-bold flex items-center justify-center text-lg mb-4">
+            01
+          </div>
+          <h3 class="font-display font-bold text-slate-900 text-base mb-1.5">Intraday Enthusiasts</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Individuals interested in learning intraday trading concepts through a clear, educational lens.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover-lift">
+          <div class="w-10 h-10 rounded-xl bg-trade-100 text-trade-700 font-bold flex items-center justify-center text-lg mb-4">
+            02
+          </div>
+          <h3 class="font-display font-bold text-slate-900 text-base mb-1.5">Market Beginners</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Beginners who want to understand how trading strategies are structured without drowning in complex jargon.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover-lift">
+          <div class="w-10 h-10 rounded-xl bg-trade-100 text-trade-700 font-bold flex items-center justify-center text-lg mb-4">
+            03
+          </div>
+          <h3 class="font-display font-bold text-slate-900 text-base mb-1.5">Existing Traders</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Existing traders interested in learning momentum-based stock screening to build objective daily watchlists.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover-lift">
+          <div class="w-10 h-10 rounded-xl bg-trade-100 text-trade-700 font-bold flex items-center justify-center text-lg mb-4">
+            04
+          </div>
+          <h3 class="font-display font-bold text-slate-900 text-base mb-1.5">Price Action Learners</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Individuals who want to understand price action, candlestick dynamics, and chart structure.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover-lift">
+          <div class="w-10 h-10 rounded-xl bg-trade-100 text-trade-700 font-bold flex items-center justify-center text-lg mb-4">
+            05
+          </div>
+          <h3 class="font-display font-bold text-slate-900 text-base mb-1.5">Risk-Conscious Traders</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Traders interested in understanding position sizing and predefined risk to protect their capital long term.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 hover-lift">
+          <div class="w-10 h-10 rounded-xl bg-trade-100 text-trade-700 font-bold flex items-center justify-center text-lg mb-4">
+            06
+          </div>
+          <h3 class="font-display font-bold text-slate-900 text-base mb-1.5">Structured Strategy Seekers</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Learners looking for a structured approach to studying intraday strategies rather than random entries.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 9. WHAT'S INCLUDED IN YOUR LEARNING EXPERIENCE? -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3.5 py-1 rounded-full">
+          Comprehensive Learning Package
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-950 mt-3">
+          WHAT'S INCLUDED IN YOUR LEARNING EXPERIENCE?
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
+          From live session breakdowns to tangible takeaways, here is everything designed to support your learning journey.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-stretch">
+
+        <!-- Core Workshop Box -->
+        <div class="bg-white rounded-3xl border-2 border-slate-200 p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="inline-block bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">
+              Core Workshop Curriculum
+            </div>
+            <h3 class="text-2xl font-display font-extrabold text-slate-900 mb-2">
+              The Live Workshop Sessions
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mb-6">
+              In-depth, interactive training covering every pillar of intraday execution.
+            </p>
+
+            <ul class="space-y-4 text-xs sm:text-sm text-slate-800">
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-trade-100 text-trade-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✔</span>
+                <div>
+                  <strong class="text-slate-900">One Intraday Trading Strategy</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Step-by-step educational breakdown of setup conditions and trade management.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-trade-100 text-trade-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✔</span>
+                <div>
+                  <strong class="text-slate-900">Momentum Stock Selection Framework</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">How to filter and build high-probability daily focus watchlists.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-trade-100 text-trade-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✔</span>
+                <div>
+                  <strong class="text-slate-900">Price Action Learning</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Understanding candlestick behavior, market structure, and trigger zones.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-trade-100 text-trade-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✔</span>
+                <div>
+                  <strong class="text-slate-900">Risk-Based Position Sizing</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Exact mathematical formulas to size trade quantity based on predefined stop loss.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="mt-8 pt-5 border-t border-slate-100 text-xs text-slate-500 flex items-center gap-2">
+            <span>✨</span> <span>Taught live with real historical chart walk-throughs</span>
+          </div>
+        </div>
+
+        <!-- Additional Learning Resources Box -->
+        <div class="bg-gradient-to-br from-trade-50/80 via-white to-slate-50 rounded-3xl border-2 border-trade-500 p-6 sm:p-8 shadow-md flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-trade-600 text-white text-[11px] font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">
+            Value Bundle
+          </div>
+
+          <div>
+            <div class="inline-block bg-trade-100 text-trade-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">
+              Additional Learning Resources
+            </div>
+            <h3 class="text-2xl font-display font-extrabold text-slate-900 mb-2">
+              Actionable Toolkits &amp; Community
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mb-6">
+              Practical guides and frameworks to reinforce your learnings after the live session.
+            </p>
+
+            <ul class="space-y-4 text-xs sm:text-sm text-slate-800">
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></span>
+                <div>
+                  <strong class="text-slate-900">Free Chart Pattern E-book</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Comprehensive visual reference guide of high-probability chart formations.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg></span>
+                <div>
+                  <strong class="text-slate-900">Trading Framework</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Ready-to-use checklist template for pre-market, in-market, and post-market routine.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></span>
+                <div>
+                  <strong class="text-slate-900">Inner Circle Learning Community</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Collaborative peer space for educational discussions and chart studies.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span>
+                <div>
+                  <strong class="text-slate-900">Doubt-Clearing Sessions</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Dedicated live time to address your conceptual questions directly.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></span>
+                <div>
+                  <strong class="text-slate-900">Additional Educational Resources</strong>
+                  <p class="text-slate-500 text-xs mt-0.5">Handouts, calculation sheets, and strategy reference checklists.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="mt-8 pt-5 border-t border-slate-200 text-[11px] text-slate-500 italic">
+            *Additional resources and access are subject to the final course inclusions.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 10. EDUCATIONAL FRAMEWORK CALLOUT BANNER -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-gradient-to-b from-white via-trade-50/40 to-emerald-50/30 border-b border-trade-200">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="bg-gradient-to-r from-slate-900 via-trade-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white text-center shadow-xl relative overflow-hidden">
+        
+        <div class="inline-block px-3.5 py-1 bg-trade-500/20 text-trade-300 border border-trade-500/40 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+          Core Educational Philosophy
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold tracking-tight">
+          LEARN FROM A STRUCTURED EDUCATIONAL FRAMEWORK
+        </h2>
+
+        <p class="text-base sm:text-lg text-slate-300 mt-5 leading-relaxed max-w-2xl mx-auto font-normal">
+          The objective is to understand the concepts behind a trading strategy rather than blindly following entries or copying trades.
+        </p>
+
+        <p class="text-sm sm:text-base text-trade-200 mt-4 leading-relaxed max-w-2xl mx-auto font-medium">
+          Learn how to study a setup, understand the chart conditions and consider predefined risk before planning a trade.
+        </p>
+
+        <div class="mt-8 pt-6 border-t border-slate-800 flex items-center justify-center gap-6 text-xs text-slate-400">
+          <span>🛡️ Independent Thinking</span>
+          <span>•</span>
+          <span>📊 Setup Logic</span>
+          <span>•</span>
+          <span>⚖️ Capital Discipline</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 11. MEET YOUR HOST / COACH BIO -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm">
+
+        <div class="flex flex-col md:flex-row gap-8 items-center">
+
+          <!-- Coach Photo Avatar with modal inspect -->
+          <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-trade-400 shadow-xl flex-shrink-0 bg-slate-900 cursor-pointer group" onclick="openImageModal('images/coach-portrait.jpg')">
+            <img 
+              src="images/coach-portrait.jpg" 
+              alt="Coach Nikhil" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+
+          <div class="flex-1 text-center md:text-left">
+            <span class="inline-block px-3 py-1 bg-trade-100 text-trade-800 rounded-full text-xs font-bold mb-2">
+              Your Guide &amp; Workshop Host
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-slate-950">
+              Hosted By: Nikhil
+            </h2>
+            <p class="text-sm font-semibold text-trade-700 mt-1">
+              Stock Market Educator &amp; Intraday Strategy Mentor
+            </p>
+
+            <p class="text-xs sm:text-sm text-slate-600 mt-4 leading-relaxed">
+              Nikhil focuses on simplifying complex market concepts into an actionable, rule-based intraday framework. His approach cuts through emotional market noise by prioritizing predefined risk management, objective stock screening, and price action setups.
+            </p>
+
+            <p class="text-xs sm:text-sm text-slate-600 mt-3 leading-relaxed">
+              Rather than promoting speculative calls or hype, this workshop is built on practical education—empowering participants to independently interpret charts, understand strategy logic, and respect capital preservation.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-6 pt-5 border-t border-slate-100 text-xs font-semibold text-slate-700 text-left">
+              <div class="flex items-center gap-2">
+                <span class="text-trade-600 font-bold">✔</span> Practical &amp; Concept-First
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-trade-600 font-bold">✔</span> Real Historical Case Studies
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-trade-600 font-bold">✔</span> Dedicated Live Doubt Session
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 12. WORKSHOP DETAILS & REGISTRATION CARD (PRICING) -->
+  <!-- ========================================== -->
+  <section id="pricing" class="py-16 bg-gradient-to-b from-trade-50/60 via-white to-slate-50">
+    <div class="max-w-xl mx-auto px-4 text-center">
+
+      <span class="inline-block bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider mb-3">
+        Live Workshop Registration
+      </span>
+
+      <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-950">
+        YOUR WORKSHOP DETAILS
+      </h2>
+      <p class="text-slate-600 text-sm mt-1">
+        Lock in your seat for the upcoming practical intraday learning session.
+      </p>
+
+      <!-- Details Card with Ticket Breakdown -->
+      <div class="bg-white rounded-3xl border-2 border-trade-500 p-6 sm:p-8 mt-6 shadow-2xl text-left relative overflow-hidden">
+
+        <div class="absolute top-0 right-0 bg-trade-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-bl-xl uppercase tracking-wider shadow-sm">
+          Limited Batch Seats
+        </div>
+
+        <h3 class="font-display font-bold text-slate-900 text-lg mb-4">
+          Session Summary &amp; Inclusions:
+        </h3>
+
+        <!-- Meta Specification Table -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-5 space-y-2.5 text-xs sm:text-sm">
+          <div class="flex justify-between items-center border-b border-slate-200/70 pb-2">
+            <span class="text-slate-600 font-medium flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> Workshop:</span>
+            <span class="font-extrabold text-slate-900">The Momentum Intraday Trading Workshop</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-200/70 pb-2">
+            <span class="text-slate-600 font-medium flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Date:</span>
+            <span class="font-extrabold text-trade-700">25 November</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-200/70 pb-2">
+            <span class="text-slate-600 font-medium flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Time:</span>
+            <span class="font-extrabold text-trade-700">8:00 PM – 10:00 PM</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-200/70 pb-2">
+            <span class="text-slate-600 font-medium flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Duration:</span>
+            <span class="font-bold text-slate-900">2 Hours (Live Interactive)</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-200/70 pb-2">
+            <span class="text-slate-600 font-medium flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Mode:</span>
+            <span class="font-bold text-slate-900">Live on Zoom</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-600 font-medium flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> Hosted By:</span>
+            <span class="font-extrabold text-slate-900">Nikhil</span>
+          </div>
+        </div>
+
+        <!-- Check items included in registration -->
+        <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+          <li class="flex items-start gap-2.5">
+            <span class="text-trade-600 font-bold text-base">✔</span>
+            <div><strong>Complete Live Breakdown</strong> of One Intraday Trading Strategy</div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-trade-600 font-bold text-base">✔</span>
+            <div><strong>Momentum Stock Screener</strong> logic &amp; parameters</div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-trade-600 font-bold text-base">✔</span>
+            <div><strong>Risk-Based Quantity Calculator</strong> methodology</div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-trade-600 font-bold text-base">✔</span>
+            <div><strong>Free Chart Pattern E-book</strong> &amp; Framework Resources</div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-trade-600 font-bold text-base">✔</span>
+            <div><strong>Interactive Live Q&amp;A</strong> for conceptual doubt-clearing</div>
+          </li>
+        </ul>
+
+        <!-- Price block -->
+        <div class="mt-6 pt-6 border-t border-slate-100 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-400 font-medium line-through">Regular Fee: ₹1,999</p>
+            <p class="text-3xl font-display font-extrabold text-slate-900">
+              ₹9 <span class="text-xs font-normal text-slate-500">all inclusive</span>
+            </p>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-red-600 font-bold block animate-pulse">Strictly Limited Capacity</span>
+            <span class="text-[11px] text-slate-400">Small batch for high interaction</span>
+          </div>
+        </div>
+
+        <!-- Big CTA Button to trigger Modal -->
+        <button onclick="openRegistrationModal()" class="mt-6 w-full block text-center py-4 px-6 bg-gradient-to-r from-[#075E54] via-[#128C7E] to-[#25D366] hover:from-[#054740] hover:to-[#1ebe5d] text-white shadow-xl shadow-[#25D366]/25 text-white font-extrabold text-base sm:text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 cursor-pointer">
+          REGISTER NOW &amp; RESERVE SEAT →
+        </button>
+
+        <div class="flex items-center justify-center gap-4 text-[11px] text-slate-400 mt-4">
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> 256-bit Encrypted Checkout</span>
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-trade-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Instant Zoom Link Access</span>
+        </div>
+
+        <div class="mt-5 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center text-[11px] text-slate-500">
+          💡 <strong>Pure Concept Education:</strong> Learn how to study setups and calculate predefined risk before planning trades. No tips or calls provided.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 13. FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION) -->
+  <!-- ========================================== -->
+  <section class="py-16 bg-gradient-to-b from-white via-trade-50/30 to-emerald-50/40 border-t border-trade-200">
+    <div class="max-w-2xl mx-auto px-4">
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-trade-700 bg-trade-100 px-3 py-1 rounded-full">
+          Got Questions?
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-slate-900 mt-2">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">Everything you need to know about the workshop structure.</p>
+      </div>
+
+      <div class="space-y-3.5">
+
+        <!-- FAQ 1 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>1. Is this workshop suitable for beginners?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            The workshop is designed to explain intraday trading concepts in a structured learning format. Basic familiarity with stock market terminology can be helpful.
+          </p>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>2. Will I learn a complete intraday trading strategy?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            Yes. The workshop covers the educational breakdown of one intraday strategy, including its setup and execution framework.
+          </p>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>3. Will stock selection be covered?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            Yes. You will learn the concepts and parameters used in momentum-based stock selection.
+          </p>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>4. Will price action be explained?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            Yes. The workshop covers the price action concepts relevant to understanding the strategy.
+          </p>
+        </details>
+
+        <!-- FAQ 5 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>5. Will I learn quantity calculation?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            Yes. You will learn how to calculate position size using predefined risk and stop-loss distance.
+          </p>
+        </details>
+
+        <!-- FAQ 6 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>6. Will I receive stock recommendations?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            No. The workshop is designed for general educational purposes and does not provide personalized investment advice or actionable stock-specific recommendations.
+          </p>
+        </details>
+
+        <!-- FAQ 7 -->
+        <details class="group bg-slate-50 p-4 rounded-xl border border-slate-200 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center cursor-pointer text-sm font-bold text-slate-900 gap-4">
+            <span>7. Will this workshop guarantee trading profits?</span>
+            <span class="text-slate-400 group-hover:text-trade-600 transition flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </summary>
+          <p class="text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60 leading-relaxed">
+            No. Trading involves market risk, and no strategy or educational programme can guarantee profits or returns.
+          </p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 14. IMPORTANT DISCLOSURE & DISCLAIMER (SEBI COMPLIANCE) -->
+  <!-- ========================================== -->
+  <section class="py-14 bg-slate-100 border-t border-slate-300">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="bg-white rounded-2xl border border-slate-300 p-6 sm:p-8 shadow-sm">
+        <div class="flex items-center gap-2 mb-3 text-slate-900 font-bold text-sm uppercase tracking-wider">
+          <span class="text-amber-600 text-base">⚠️</span>
+          <span>Important Disclosure &amp; Regulatory Disclaimer</span>
+        </div>
+        
+        <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
+          <p>
+            This workshop is intended solely for general educational and awareness purposes. The academy is not registered with SEBI as an Investment Adviser or Research Analyst. The workshop does not provide investment advice, research reports, stock-specific buy/sell/hold recommendations, trading calls or assured returns.
+          </p>
+          <p>
+            All examples are intended to explain educational concepts and do not constitute a recommendation to buy, sell or hold any security. Participants should conduct their own independent research and understand the risks associated with securities market transactions.
+          </p>
+          <p>
+            Stock market trading involves substantial financial risk, including the possible loss of capital. Past examples and hypothetical illustrations are not indicative of future performance.
+          </p>
+          <p>
+            Participation in this workshop does not guarantee trading success, profitability or any particular financial outcome.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 15. FOOTER -->
+  <!-- ========================================== -->
+  <footer class="bg-slate-950 text-slate-400 py-10 text-center text-xs border-t border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 space-y-3">
+      <p class="font-bold text-white text-sm">
+        The Momentum Intraday Trading Workshop | Stock Market Education
+      </p>
+      <p class="text-slate-500 text-[11px] max-w-xl mx-auto">
+        Structured Stock Market Education • Risk-Based Execution • Conceptual Price Action Learning
+      </p>
+      <p class="text-slate-400 text-xs pt-1">
+        <a href="https://knitik.com/" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition font-medium">
+          Design &amp; Marketed by <strong class="text-white hover:text-emerald-400">KNITIK</strong>
+        </a>
+      </p>
+      <p class="text-slate-600 text-[10px] pt-1">
+        © 2026 The Momentum Intraday Trading Workshop. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- 16. MOBILE FIXED STICKY CTA BAR -->
+  <!-- ========================================== -->
+  <div class="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-2xl flex items-center justify-between z-40 md:hidden">
+    <div>
+      <span class="text-[10px] text-slate-400 line-through">₹1,999</span>
+      <p class="text-lg font-black text-slate-950 leading-none">
+        ₹9 <span class="text-[10px] font-normal text-trade-600">Live Workshop</span>
+      </p>
+    </div>
+    <button onclick="openRegistrationModal()" class="px-5 py-2.5 bg-gradient-to-r from-[#075E54] via-[#128C7E] to-[#25D366] hover:from-[#054740] hover:to-[#1ebe5d] text-white shadow-xl shadow-[#25D366]/25 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer">
+      <span>Reserve Seat</span>
+      <span>→</span>
+    </button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 17. REGISTRATION / PAYMENT MODAL -->
+  <!-- ========================================== -->
+  <div id="reg-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
+      <button onclick="closeRegistrationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 transition cursor-pointer">
+        ✕
+      </button>
+
+      <div class="text-center mb-5">
+        <span class="inline-block px-2.5 py-1 bg-trade-100 text-trade-800 rounded-full text-xs font-bold mb-1">
+          Workshop Registration
+        </span>
+        <h3 class="text-xl font-display font-extrabold text-slate-900">
+          Confirm Your Seat (₹9)
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">
+          Instant WhatsApp &amp; Email confirmation with workshop access link
+        </p>
+      </div>
+
+      <form id="reg-form" onsubmit="handleRegistration(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Your Full Name</label>
+          <input type="text" id="cust-name" required placeholder="e.g. Rahul Sharma" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-trade-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp Number (For Workshop Link)</label>
+          <input type="tel" id="cust-phone" required placeholder="e.g. 9876543210" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-trade-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Email Address (For Resources)</label>
+          <input type="email" id="cust-email" required placeholder="e.g. rahul@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-trade-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Trading Experience Level</label>
+          <select id="cust-exp" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-trade-500 bg-white">
+            <option value="beginner">Complete Beginner / Exploring</option>
+            <option value="intermediate">Active Trader (Under 1 Year)</option>
+            <option value="advanced">Experienced Trader (1+ Years)</option>
+          </select>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+          <span class="text-slate-600">Total Payable:</span>
+          <span class="font-extrabold text-base text-trade-700">₹9</span>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-[#075E54] via-[#128C7E] to-[#25D366] hover:from-[#054740] hover:to-[#1ebe5d] text-white shadow-xl shadow-[#25D366]/25 text-white font-bold rounded-xl text-sm shadow-lg transition cursor-pointer">
+          Proceed to Confirm Seat &amp; Get Link
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+    <!-- ========================================== -->
+  <!-- VIDEO LIGHTBOX MODAL -->
+  <!-- ========================================== -->
+  <div id="video-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden" onclick="closeVideoModal()">
+    <div class="relative max-w-sm sm:max-w-md w-full bg-slate-900 rounded-3xl p-3 shadow-2xl border border-slate-800" onclick="event.stopPropagation()">
+      <button onclick="closeVideoModal()" class="absolute -top-3 -right-3 text-white bg-slate-950 border border-slate-700 hover:bg-red-600 text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer">
+        ✕
+      </button>
+      <video id="modal-video-player" src="videos/workshop-video.mp4" controls class="w-full h-auto rounded-2xl max-h-[80vh] block bg-black" playsinline></video>
+    </div>
+  </div>
+
+  <!-- 18. IMAGE ZOOM LIGHTBOX MODAL -->
+  <!-- ========================================== -->
+  <div id="image-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden" onclick="closeImageModal()">
+    <div class="relative max-w-3xl w-full bg-white rounded-3xl p-3 sm:p-4 shadow-2xl" onclick="event.stopPropagation()">
+      <button onclick="closeImageModal()" class="absolute -top-3 -right-3 text-white bg-slate-900 border border-slate-700 hover:bg-red-600 text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg transition cursor-pointer">
+        ✕
+      </button>
+      <img id="modal-img" src="" alt="Enlarged Diagram" class="w-full h-auto rounded-2xl max-h-[85vh] object-contain block">
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 19. JAVASCRIPT LOGIC -->
+  <!-- ========================================== -->
+  <script>
+    // 1. EVERGREEN 15-MINUTE COUNTDOWN TIMER
+    function startEvergreenTimer() {
+      const timerElement = document.getElementById('evergreen-timer');
+      if (!timerElement) return;
+
+      const DURATION = 15 * 60 * 1000; // 15 minutes
+      const STORAGE_KEY = 'trading_blueprint_offer_timer';
+
+      let deadline = localStorage.getItem(STORAGE_KEY);
+      const now = Date.now();
+
+      if (!deadline || now >= parseInt(deadline, 10)) {
+        deadline = now + DURATION;
+        localStorage.setItem(STORAGE_KEY, deadline);
+      } else {
+        deadline = parseInt(deadline, 10);
+      }
+
+      function update() {
+        const currentTime = Date.now();
+        let remaining = deadline - currentTime;
+
+        if (remaining <= 0) {
+          deadline = Date.now() + DURATION;
+          localStorage.setItem(STORAGE_KEY, deadline);
+          remaining = DURATION;
+        }
+
+        const minutes = Math.floor((remaining / (1000 * 60)) % 60);
+        const seconds = Math.floor((remaining / 1000) % 60);
+
+        const pad = (n) => String(n).padStart(2, '0');
+        timerElement.innerText = `${pad(minutes)}:${pad(seconds)}`;
+      }
+
+      update();
+      setInterval(update, 1000);
+    }
+    startEvergreenTimer();
+
+    // ========================================================
+    // PAYMENT & REGISTRATION CONFIGURATION
+    // When you have your payment gateway link (Razorpay, Cashfree, WhatsApp group, etc.),
+    // simply paste it into PAYMENT_LINK below!
+    // ========================================================
+    const PAYMENT_LINK = ""; // e.g. "https://rzp.io/rzp/yourlink"
+
+    // 2. REGISTRATION MODAL & DIRECT PAYMENT ROUTING
+    function openRegistrationModal() {
+      if (PAYMENT_LINK && PAYMENT_LINK.trim() !== "") {
+        window.location.href = PAYMENT_LINK;
+        return;
+      }
+      const modal = document.getElementById('reg-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeRegistrationModal() {
+      const modal = document.getElementById('reg-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handleRegistration(e) {
+      e.preventDefault();
+      if (PAYMENT_LINK && PAYMENT_LINK.trim() !== "") {
+        window.location.href = PAYMENT_LINK;
+        return;
+      }
+      const name = document.getElementById('cust-name').value;
+      alert(`Thank you ${name}! Your seat for ₹9 has been recorded. Once your payment gateway link is added in PAYMENT_LINK, users will be taken directly to the payment page.`);
+      closeRegistrationModal();
+    }
+
+    // 2.5 VIDEO MODAL LOGIC
+    function openVideoModal(src) {
+      const modal = document.getElementById('video-modal');
+      const vid = document.getElementById('modal-video-player');
+      if (modal && vid) {
+        if (src) vid.src = src;
+        modal.classList.remove('hidden');
+        vid.play();
+      }
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('video-modal');
+      const vid = document.getElementById('modal-video-player');
+      if (modal) modal.classList.add('hidden');
+      if (vid) vid.pause();
+    }
+
+    // 3. IMAGE LIGHTBOX
+    function openImageModal(imgSrc) {
+      const modal = document.getElementById('image-modal');
+      const img = document.getElementById('modal-img');
+      if (modal && img) {
+        img.src = imgSrc;
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById('image-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeRegistrationModal();
+        closeImageModal();
+        closeVideoModal();
+      }
+    });
+  </script>
+
+</body>
+</html>

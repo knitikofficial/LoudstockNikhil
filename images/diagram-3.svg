@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="greenCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#01241b"/>
+      <stop offset="50%" stop-color="#044e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#greenCardGrad)" rx="16"/>
+  <rect x="20" y="20" width="560" height="40" rx="8" fill="#1e293b"/>
+  <circle cx="45" cy="40" r="5" fill="#ef4444"/><circle cx="65" cy="40" r="5" fill="#f59e0b"/><circle cx="85" cy="40" r="5" fill="#10b981"/>
+  <text x="110" y="45" fill="#94a3b8" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700">03. PRICE ACTION &amp; MARKET STRUCTURE</text>
+
+  <!-- Candlesticks in a consolidation breakout -->
+  <g transform="translate(60, 100)">
+    <!-- Resistance Line -->
+    <line x1="20" y1="90" x2="460" y2="90" stroke="#f87171" stroke-width="2" stroke-dasharray="6 6"/>
+    <text x="400" y="80" fill="#f87171" font-size="11" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700">KEY RESISTANCE</text>
+
+    <!-- Support Line -->
+    <line x1="20" y1="210" x2="460" y2="210" stroke="#34d399" stroke-width="2" stroke-dasharray="6 6"/>
+    <text x="410" y="230" fill="#34d399" font-size="11" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700">BASE SUPPORT</text>
+
+    <!-- Candles -->
+    <!-- Touch 1 -->
+    <line x1="60" y1="80" x2="60" y2="200" stroke="#10b981" stroke-width="2"/>
+    <rect x="52" y="100" width="16" height="80" fill="#10b981" rx="2"/>
+    
+    <!-- Retest 1 -->
+    <line x1="120" y1="120" x2="120" y2="220" stroke="#ef4444" stroke-width="2"/>
+    <rect x="112" y="140" width="16" height="60" fill="#ef4444" rx="2"/>
+
+    <!-- Touch 2 -->
+    <line x1="180" y1="85" x2="180" y2="190" stroke="#10b981" stroke-width="2"/>
+    <rect x="172" y="110" width="16" height="60" fill="#10b981" rx="2"/>
+
+    <!-- Retest 2 (Higher Low) -->
+    <line x1="240" y1="130" x2="240" y2="190" stroke="#ef4444" stroke-width="2"/>
+    <rect x="232" y="145" width="16" height="35" fill="#ef4444" rx="2"/>
+
+    <!-- Breakout Candle -->
+    <line x1="300" y1="40" x2="300" y2="170" stroke="#10b981" stroke-width="3"/>
+    <rect x="290" y="60" width="20" height="90" fill="#10b981" rx="2"/>
+    <text x="250" y="30" fill="#34d399" font-size="12" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800">STRONG BREAKOUT</text>
+
+    <!-- Retest Bar -->
+    <line x1="360" y1="80" x2="360" y2="130" stroke="#ef4444" stroke-width="2"/>
+    <rect x="352" y="90" width="16" height="25" fill="#ef4444" rx="2"/>
+
+    <!-- Continuation -->
+    <line x1="420" y1="20" x2="420" y2="100" stroke="#10b981" stroke-width="3"/>
+    <rect x="410" y="35" width="20" height="60" fill="#10b981" rx="2"/>
+  </g>
+</svg>
